@@ -243,40 +243,6 @@ namespace NP.Ava.UniDock
                 group.RemoveItselfFromParent();
                 group.TheDockManager = null;
             }
-
-            IDockGroup? dockParent = group.DockParent;
-            if (dockParent == null)
-            {
-                return;
-            }
-
-            if (group.GetNumberChildren() == 1)
-            {
-                FloatingWindow? window = group.GetGroupWindow();
-                try
-                {
-                    window?.SetCloseIsNotAllowed();
-
-                    int idx = dockParent.DockChildren.IndexOf(group);
-
-                    GridLength sizeCoeff = dockParent.GetSizeCoeff(idx);
-
-                    group.RemoveItselfFromParent();
-
-                    IDockGroup child = group.DockChildren.First();
-                    child.RemoveItselfFromParent();
-
-                    group.TheDockManager = null;
-
-                    dockParent.DockChildren.Insert(idx, child);
-
-                    dockParent.SetSizeCoeff(idx, sizeCoeff);
-                }
-                finally
-                {
-                    window?.ResetIsCloseAllowed();
-                }
-            }
         }
 
         public static void SetIsDockVisible(this IDockGroup group)
